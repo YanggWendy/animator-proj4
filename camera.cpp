@@ -124,7 +124,7 @@ void Camera::calculateViewingTransformParameters()
 	MakeDiagonal(twistXform, 1.0f);
 	MakeHTrans(originXform, mLookAt);
 	
-	mPosition = Vec3f(0,0,0);
+	mPosition = Vec3f(0, 8, -10);
 
 	mPosition = originXform * (azimXform * (elevXform * (dollyXform * mPosition)));
 

@@ -414,3 +414,226 @@ void drawTriangle( double x1, double y1, double z1,
         glEnd();
     }
 }
+
+
+/*void draw_level0_animation()
+{
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
+
+    glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+    glTranslated(0, 3.9, 0);
+
+    //Neck part
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0, 1.5, 0.6);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawCylinder(VAL(NECK_LENTH), 0.7, 0.5);
+    glPopMatrix();
+
+    //head
+    glPushMatrix();
+    glTranslated(0, 2.8, 1.2);
+    glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
+    glRotated(-90, 0.0, 1.0, 0.0);
+    glRotated(VAL(HEADYPOS), 0.0, 1.0, 0.0);
+    glRotated(VAL(HEADZPOS), 0.0, 0.0, 1.0);
+    if (head_angle == 70)
+    {
+        head_flag = true;
+    }
+    if (head_angle == -70)
+    {
+        head_flag = false;
+    }
+    if (head_flag == false)
+    {
+        head_angle++;
+        int some = head_angle / 2;
+        glRotated(some, 0.0, 0.0, 1);
+    }
+    else
+    {
+        head_angle--;
+        int some = head_angle / 2;
+        glRotated(some, 0.0, 0.0, 1);
+    }
+    draw_Head();
+
+    glTranslated(1.35, 0, 0);
+    //upper mouth
+    glPushMatrix();
+    glRotated(VAL(MOUTHZPOS), 0, 0, 1);
+    draw_UpperMouth();
+    glPopMatrix();
+
+    //lower mouth
+    glPushMatrix();
+    glRotated(-VAL(MOUTHZPOS), 0, 0, 1);
+    draw_LowerMouth();
+    glPopMatrix();
+
+    glPopMatrix();
+
+
+    //left wing
+    glPushMatrix();
+    glTranslated(1.5, 0, 0);
+    glRotated(VAL(LEFT_WING), 0.0, 0.0, 1);
+    if (left_wing_angle == 55)
+    {
+        left_wing_flag = true;
+    }
+    if (left_wing_angle == -55)
+    {
+        left_wing_flag = false;
+    }
+    if (left_wing_flag == false) { glRotated(left_wing_angle++, 0.0, 0.0, 1); }
+    else { glRotated(left_wing_angle--, 0.0, 0.0, 1); }
+
+    draw_left_wings();
+    glPopMatrix();
+
+    //right wing
+    glPushMatrix();
+    glTranslated(-1.5, 0, 0);
+    glRotated(VAL(RIGHT_WING), 0.0, 0.0, 1);
+    if (right_wing_angle == 55)
+    {
+        right_wing_flag = true;
+    }
+    if (right_wing_angle == -55)
+    {
+        right_wing_flag = false;
+    }
+    if (right_wing_flag == false) { glRotated(-(right_wing_angle++), 0.0, 0.0, 1); }
+    else { glRotated(-(right_wing_angle--), 0.0, 0.0, 1); }
+    draw_right_wings();
+    glPopMatrix();
+
+    //body
+    glPushMatrix();
+    draw_body();
+    glPopMatrix();
+
+    //connection
+    glPushMatrix();
+    draw_connection();
+    glPopMatrix();
+
+    //tail
+    glPushMatrix();
+    glRotated(-20, 1, 0, 0);
+    glTranslated(0, 0, -4.5);
+    drawSphere(0.2);
+    glRotated(VAL(TAIL), 1.0, 0.0, 0);
+    if (tail_angle == 70)
+    {
+        tail_flag = true;
+    }
+    if (tail_angle == -70)
+    {
+        tail_flag = false;
+    }
+    if (tail_flag == false)
+    {
+        tail_angle++;
+        int some = tail_angle / 2;
+        glRotated(some, 1.0, 0.0, 0);
+    }
+    else
+    {
+        tail_angle--;
+        int some = tail_angle / 2;
+        glRotated(some, 1.0, 0.0, 0);
+    }
+    draw_tail();
+    glPopMatrix();
+
+
+    //rightupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0.9, -1.7, -0.3);
+    glRotated(VAL(UPPER_RIGHT_LEG), 1.0, 0.0, 0);
+    if (right_leg_angle == 70)
+    {
+        right_leg_flag = true;
+    }
+    if (right_leg_angle == -70)
+    {
+        right_leg_flag = false;
+    }
+    if (right_leg_flag == false)
+    {
+        right_leg_angle++;
+        int some = right_leg_angle / 2;
+        glRotated(-some, 1.0, 0.0, 0);
+    }
+    else
+    {
+        right_leg_angle--;
+        int some = right_leg_angle / 2;
+        glRotated(-some, 1.0, 0.0, 0);
+    }
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawSphere(0.2);
+    draw_rightupperLeg();
+    glRotated(90, 1.0, 0.0, 0.0);
+    glRotated(VAL(LOWER_RIGHT_LEG), 1.0, 0.0, 0);
+    draw_rightlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_righttoes();
+    glPopMatrix();
+
+    //lefttupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(-0.9, -1.7, -0.3);
+    glRotated(VAL(UPPER_LEFT_LEG), 1.0, 0.0, 0);
+    if (left_leg_angle == 70)
+    {
+        left_leg_flag = true;
+    }
+    if (left_leg_angle == -70)
+    {
+        left_leg_flag = false;
+    }
+    if (left_leg_flag == false)
+    {
+        left_leg_angle++;
+        int some = left_leg_angle / 2;
+        glRotated(some, 1.0, 0.0, 0);
+    }
+    else
+    {
+        left_leg_angle--;
+        int some = left_leg_angle / 2;
+        glRotated(some, 1.0, 0.0, 0);
+    }
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    draw_leftupperLeg();
+    drawSphere(0.2);
+    glRotated(90, 1.0, 0.0, 0.0);
+    glRotated(VAL(LOWER_LEFT_LEG), 1.0, 0.0, 0.0);
+    draw_leftlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_lefttoes();
+    glPopMatrix();
+
+}
+*/
