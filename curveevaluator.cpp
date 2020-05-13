@@ -6,3 +6,4 @@ int CurveEvaluator::s_iSegCount = 16;
 CurveEvaluator::~CurveEvaluator(void)
 {
 }
+

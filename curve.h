@@ -9,6 +9,7 @@
 
 #include "Point.h"
 
+
 class CurveEvaluator;
 
 //using namespace std;
