@@ -1,3 +1,27 @@
 ﻿cl : 命令行 warning D9035: “Gm”选项已否决，并将在将来的版本中移除
-  modeleruiwindows.cxx
+  modelerui.cpp
+D:\project4\animator-proj4\modelerui.cpp(57,1): warning C4996: '_splitpath': This function or variable may be unsafe. Consider using _splitpath_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdlib.h(1112): message : 参见“_splitpath”的声明
+D:\project4\animator-proj4\modelerui.cpp(86,1): warning C4996: '_splitpath': This function or variable may be unsafe. Consider using _splitpath_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdlib.h(1112): message : 参见“_splitpath”的声明
+D:\project4\animator-proj4\modelerui.cpp(109,1): warning C4996: '_splitpath': This function or variable may be unsafe. Consider using _splitpath_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdlib.h(1112): message : 参见“_splitpath”的声明
+D:\project4\animator-proj4\modelerui.cpp(246,23): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+D:\project4\animator-proj4\modelerui.cpp(452,14): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+D:\project4\animator-proj4\modelerui.cpp(453,17): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+D:\project4\animator-proj4\modelerui.cpp(479,14): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+D:\project4\animator-proj4\modelerui.cpp(491,14): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+D:\project4\animator-proj4\modelerui.cpp(504,39): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+D:\project4\animator-proj4\modelerui.cpp(514,35): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+D:\project4\animator-proj4\modelerui.cpp(524,35): warning C4244: “参数”: 从“double”转换到“float”，可能丢失数据
+D:\project4\animator-proj4\modelerui.cpp(615,11): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+D:\project4\animator-proj4\modelerui.cpp(706,1): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1961): message : 参见“_snprintf”的声明
+D:\project4\animator-proj4\modelerui.cpp(784,1): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1961): message : 参见“_snprintf”的声明
+D:\project4\animator-proj4\modelerui.cpp(809,1): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1961): message : 参见“_snprintf”的声明
+D:\project4\animator-proj4\modelerui.cpp(828,38): warning C4244: “return”: 从“double”转换到“float”，可能丢失数据
+D:\project4\animator-proj4\modelerui.cpp(871,1): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1961): message : 参见“_snprintf”的声明
   Animator.vcxproj -> D:\project4\animator-proj4\.\Debug\modeler.exe

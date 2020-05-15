@@ -66,8 +66,8 @@ public:
   Fl_Slider *m_psldrTimeSlider;
   Fl_Slider *m_psldrPlayStart;
   Fl_Slider *m_psldrPlayEnd;
-  Fl_Slider* m_pbtflatness;
-  Fl_Slider* m_pbttension;
+  Fl_Value_Slider* m_pbtflatness;
+  Fl_Value_Slider* m_pbttension;
   Fl_Output *m_poutTime;
   Fl_Output *m_poutPlayStart;
   Fl_Output *m_poutPlayEnd;

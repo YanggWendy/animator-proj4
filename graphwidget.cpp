@@ -890,11 +890,11 @@ void GraphWidget::flatnessCurve(int iCurve, bool bflatness)
 }
 
 
-int GraphWidget::currCurveflatness() const
+double GraphWidget::currCurveflatness() const
 {
 	if (m_iCurrCurve >= 0) {
 		bool bflatness = m_pcrvvCurves[m_iCurrCurve]->flatness();
-		return bflatness ? 1 : 0;
+		return bflatness;
 	}
 
 	return -1;
@@ -903,20 +903,20 @@ int GraphWidget::currCurveflatness() const
 void GraphWidget::currCurveflatness(bool bflatness)
 {
 	if (m_iCurrCurve >= 0) {
-		m_pcrvvCurves[m_iCurrCurve]->adaptive(bflatness);
+		m_pcrvvCurves[m_iCurrCurve]->flatness(bflatness);
 	}
 }
 
 void GraphWidget::tensionCurve(int iCurve, bool btension)
 {
-	m_pcrvvCurves[iCurve]->adaptive(btension);
+	m_pcrvvCurves[iCurve]->tension(btension);
 }
 
-int GraphWidget::currCurvetension() const
+double GraphWidget::currCurvetension() const
 {
 	if (m_iCurrCurve >= 0) {
-		bool btension = m_pcrvvCurves[m_iCurrCurve]->tension();
-		return btension ? 1 : 0;
+		double btension = m_pcrvvCurves[m_iCurrCurve]->tension();
+		return btension;
 	}
 
 	return -1;

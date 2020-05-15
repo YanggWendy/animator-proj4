@@ -674,7 +674,7 @@ void ModelerUI::activeCurvesChanged()
 		m_pbtAdaptive->activate();
 		m_pbtAdaptive->value(m_pwndGraphWidget->currCurveAdaptive());
 		m_pbtflatness->activate();
-		m_pbtflatness->value(m_pwndGraphWidget->currCurvetension());
+		m_pbtflatness->value(m_pwndGraphWidget->currCurveflatness());
 		m_pbttension->activate();
 		m_pbttension->value(m_pwndGraphWidget->currCurvetension());
 	}
@@ -978,6 +978,9 @@ m_bSaveMovie(false)
 	m_pwndMainWnd->callback((Fl_Callback*)cb_hide);
 	m_pwndMainWnd->when(FL_HIDE);
 
+
+	m_pbttension->value(0.5);
+	m_pbtflatness->value(0.0001);
 	m_poutTime->value("0.00");
 	m_poutPlayStart->value("0.00");
 	m_poutPlayEnd->value("20.00");

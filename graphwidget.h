@@ -107,12 +107,12 @@ public:
 
 	void flatnessActiveCurves(bool bWrap);
 	void flatnessCurve(int iCurve, bool bWrap);
-	int currCurveflatness() const;
+	double currCurveflatness() const;
 	void currCurveflatness(bool bAdaptive);
 
 	void tensionActiveCurves(bool bWrap);
 	void tensionCurve(int iCurve, bool bWrap);
-	int currCurvetension() const;
+	double currCurvetension() const;
 	void currCurvetension(bool bAdaptive);
 
 	void invalidateAllCurves();
