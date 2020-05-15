@@ -181,4 +181,3 @@ void ModelerView::saveBMP(const char* szFileName)
 	
 	delete [] imageBuffer;
 }
-

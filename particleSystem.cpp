@@ -14,7 +14,7 @@
  * Constructors
  ***************/
 
-ParticleSystem::ParticleSystem() 
+ParticleSystem::ParticleSystem()
 {
 	// TODO
 
@@ -28,7 +28,7 @@ ParticleSystem::ParticleSystem()
  * Destructor
  *************/
 
-ParticleSystem::~ParticleSystem() 
+ParticleSystem::~ParticleSystem()
 {
 	// TODO
 
@@ -39,10 +39,10 @@ ParticleSystem::~ParticleSystem()
  * Simulation fxns
  ******************/
 
-/** Start the simulation */
+ /** Start the simulation */
 void ParticleSystem::startSimulation(float t)
 {
-    
+
 	// TODO
 
 	// These values are used by the UI ...
@@ -60,7 +60,7 @@ void ParticleSystem::startSimulation(float t)
 /** Stop the simulation */
 void ParticleSystem::stopSimulation(float t)
 {
-    
+
 	// TODO
 
 	// These values are used by the UI
@@ -72,7 +72,7 @@ void ParticleSystem::stopSimulation(float t)
 /** Reset the simulation */
 void ParticleSystem::resetSimulation(float t)
 {
-    
+
 	// TODO
 
 	// These values are used by the UI
@@ -102,7 +102,7 @@ void ParticleSystem::drawParticles(float t)
 
 /** Adds the current configuration of particles to
   * your data structure for storing baked particles **/
-void ParticleSystem::bakeParticles(float t) 
+void ParticleSystem::bakeParticles(float t)
 {
 
 	// TODO
