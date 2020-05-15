@@ -1,5 +1,5 @@
 // This camera stuff mostly by ehsu
-
+//online
 #ifndef CAMERA_H
 #define CAMERA_H
 
@@ -22,8 +22,8 @@ enum KeyframeCurves
 
 class Camera {
     
-protected:
-    
+public:
+
     float		mElevation;
     float		mAzimuth;
     float		mDolly;

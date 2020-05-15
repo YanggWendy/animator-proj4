@@ -8,7 +8,9 @@
 #include "modelerapp.h"
 #include "modelerdraw.h"
 #include "particleSystem.h"
-
+#include "Mat.h"
+#include "Vec.h"
+#include "camera.h"
 
 #include <FL/gl.h>
 #include <stdlib.h>
@@ -26,10 +28,10 @@
 // We'll use these constants to access the values 
 // of the controls from the user interface.
 enum BirdControls
-{ 
-	XPOS, YPOS, ZPOS, HEADYPOS, HEADZPOS, MOUTHZPOS, NECK_LENTH, UPPER_RIGHT_LEG,
-	UPPER_LEFT_LEG, LOWER_RIGHT_LEG, LOWER_LEFT_LEG, LEFT_TOES, RIGHT_TOES, RIGHT_WING,
-	LEFT_WING, TAIL, DEFAULT_LIGHT_R, DEFAULT_LIGHT_G, DEFAULT_LIGHT_B, BODY_R, BODY_G, BODY_B,
+{
+    XPOS, YPOS, ZPOS, HEADYPOS, HEADZPOS, MOUTHZPOS, NECK_LENTH, UPPER_RIGHT_LEG,
+    UPPER_LEFT_LEG, LOWER_RIGHT_LEG, LOWER_LEFT_LEG, LEFT_TOES, RIGHT_TOES, RIGHT_WING,
+    LEFT_WING, TAIL, DEFAULT_LIGHT_R, DEFAULT_LIGHT_G, DEFAULT_LIGHT_B, BODY_R, BODY_G, BODY_B,
     MOUTH_R, MOUTH_G, MOUTH_B, LEG_R, LEG_G, LEG_B, EYEBROW_R, EYEBROW_G, EYEBROW_B, PARTICLE_COUNT, NUMCONTROLS,
 };
 
@@ -50,22 +52,24 @@ void draw_lefttoes();
 void draw_flower();
 void draw_righteyebrow();
 void draw_lefteyebrow();
-void draw_level0();
+void draw_level0(Mat4f cameraMat, int n);
+
+ParticleSystem* parSys;
 
 // To make a RobotArm, we inherit off of ModelerView
 class Bird : public ModelerView
 {
 public:
-	Bird(int x, int y, int w, int h, char *label)
-        : ModelerView(x,y,w,h,label) {}
+    Bird(int x, int y, int w, int h, char* label)
+        : ModelerView(x, y, w, h, label) {}
     virtual void draw();
 };
 
 // We need to make a creator function, mostly because of
 // nasty API stuff that we'd rather stay away from.
-ModelerView* createBird(int x, int y, int w, int h, char *label)
-{ 
-    return new Bird(x,y,w,h,label);
+ModelerView* createBird(int x, int y, int w, int h, char* label)
+{
+    return new Bird(x, y, w, h, label);
 }
 
 // We'll be getting the instance of the application a lot; 
@@ -74,27 +78,92 @@ ModelerView* createBird(int x, int y, int w, int h, char *label)
 
 
 
+Mat4f getModelViewMatrix() {
+    /**************************
+        **
+        **	GET THE OPENGL MODELVIEW MATRIX
+        **
+        **	Since OpenGL stores it's matricies in
+        **	column major order and our library
+        **	use row major order, we will need to
+        **	transpose what OpenGL gives us before returning.
+        **
+        **	Hint:  Use look up glGetFloatv or glGetDoublev
+        **	for how to get these values from OpenGL.
+        **
+        *******************************/
 
+    GLfloat m[16];
+    glGetFloatv(GL_MODELVIEW_MATRIX, m);
+    Mat4f matMV(m[0], m[1], m[2], m[3],
+        m[4], m[5], m[6], m[7],
+        m[8], m[9], m[10], m[11],
+        m[12], m[13], m[14], m[15]);
+
+    return matMV.transpose(); // convert to row major
+}
+
+void addParticleStartingAt(Vec4f worldPoint, int n)
+{
+
+    ParticleSystem* ps = ModelerApplication::Instance()->GetParticleSystem();
+
+    Vec3f point(worldPoint[0], worldPoint[1], worldPoint[2]);
+    for (int i = 0; i < n; i++) {
+        Vec3f velocity(0, 0, -1 + 0.1 * i);
+        Particle a(worldPoint[0], worldPoint[1], worldPoint[2], velocity);
+        ps->addParticle(a);
+    }
+    /*
+    glPushMatrix();
+    //glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+    //glTranslated(0, 3.9, 0);
+
+    //glTranslated(0, -2, 0);
+    glTranslated(worldPoint[0],worldPoint[1],worldPoint[2]);
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glScaled(1, 1, 1);
+    drawSphere(0.2);
+    glPopMatrix();
+    */
+
+}
+
+void spawnParticles(Mat4f cameraMatrix, int n)
+{
+
+    Mat4f modelView = getModelViewMatrix();
+    Mat4f inverseCamera = cameraMatrix.inverse();
+    Mat4f worldMatrix = inverseCamera * modelView;
+
+    Vec4f temp(0, -2.2, 0, 1);
+    Vec4f worldPoint = worldMatrix * temp;
+
+    addParticleStartingAt(worldPoint, n);
+}
 
 // We are going to override (is that the right word?) the draw()
 // method of ModelerView to draw out RobotArm
 void Bird::draw()
 {
-	/* pick up the slider values */
+    /* pick up the slider values */
 
-	
-	float pc = VAL( PARTICLE_COUNT );
+
+    float pc = VAL(PARTICLE_COUNT);
+    int numPc = (int)pc;
 
 
     // This call takes care of a lot of the nasty projection 
     // matrix stuff
+    // deal with camera
     ModelerView::draw();
 
-	static GLfloat lmodel_ambient[] = {0.4,0.4,0.4,1.0};
-
-	// define the model
+    Mat4f cameraMatrix = getModelViewMatrix();
 
 
+    static GLfloat lmodel_ambient[] = { 0.4,0.4,0.4,1.0 };
+
+    // define the model
     glPopMatrix();
 
     // draw the floor
@@ -109,39 +178,176 @@ void Bird::draw()
     drawBox(15, 0.1f, 15);
     glPopMatrix();
 
-    draw_level0();
+    draw_level0(cameraMatrix, numPc);
     glPopMatrix();
-	//*** DON'T FORGET TO PUT THIS IN YOUR OWN CODE **/
-	endDraw();
+    //spawnParticles(cameraMatrix);
+    /*
+    glPushMatrix();
+    glTranslated(0,2.8,4.7);
+    setDiffuseColor(1, 1, 1);
+    glScaled(1, 1, 1);
+    drawSphere(0.1);
+    glPopMatrix();
+    */
+    //*** DON'T FORGET TO PUT THIS IN YOUR OWN CODE **/
+    endDraw();
+}
+
+void draw_level0(Mat4f cameraMatrix, int n)
+{
+    //draw flawor
+    glPushMatrix();
+    glTranslated(-3, 0, 4);
+    draw_flower();
+    glPopMatrix();
+
+    glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
+    glTranslated(0, 3.9, 0);
+
+    //Neck part
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0, 1.5, 0.6);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawCylinder(VAL(NECK_LENTH), 0.7, 0.5);
+    glPopMatrix();
+
+    //head
+    glPushMatrix();
+    glTranslated(0, 2.8, 1.2);
+    glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
+    glRotated(-90, 0.0, 1.0, 0.0);
+    glRotated(VAL(HEADYPOS), 0.0, 1.0, 0.0);
+    glRotated(VAL(HEADZPOS), 0.0, 0.0, 1.0);
+    draw_Head();
+
+    glTranslated(1.35, 0, 0);
+    //upper mouth
+    glPushMatrix();
+    glRotated(VAL(MOUTHZPOS), 0, 0, 1);
+    draw_UpperMouth();
+    glPopMatrix();
+
+    //lower mouth
+    glPushMatrix();
+    glRotated(-VAL(MOUTHZPOS), 0, 0, 1);
+    draw_LowerMouth();
+    glPopMatrix();
+
+    glPopMatrix();
+
+
+    //left wing
+    glPushMatrix();
+    glTranslated(1.5, 0, 0);
+    glRotated(VAL(LEFT_WING), 0.0, 0.0, 1);
+    draw_left_wings();
+
+    glPopMatrix();
+
+    //right wing
+    glPushMatrix();
+    glTranslated(-1.5, 0, 0);
+    glRotated(VAL(RIGHT_WING), 0.0, 0.0, 1);
+    draw_right_wings();
+
+    glPopMatrix();
+
+
+    //spawnParticles(cameraMatrix, n);
+
+
+    //body
+    glPushMatrix();
+    draw_body();
+    spawnParticles(cameraMatrix, n);
+    glPopMatrix();
+
+
+
+    //connection
+    glPushMatrix();
+    draw_connection();
+    glPopMatrix();
+
+    //tail
+    glPushMatrix();
+    glRotated(-20, 1, 0, 0);
+    glTranslated(0, 0, -4.5);
+    drawSphere(0.2);
+    glRotated(VAL(TAIL), 1.0, 0.0, 0);
+    draw_tail();
+    glPopMatrix();
+
+
+    //rightupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(0.9, -1.7, -0.3);
+    glRotated(VAL(UPPER_RIGHT_LEG), 1.0, 0.0, 0);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    drawSphere(0.2);
+    draw_rightupperLeg();
+    glRotated(90, 1.0, 0.0, 0.0);
+    glRotated(VAL(LOWER_RIGHT_LEG), 1.0, 0.0, 0);
+    draw_rightlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_righttoes();
+    glPopMatrix();
+
+    //lefttupper leg
+    glPushMatrix();
+    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
+    glTranslated(-0.9, -1.7, -0.3);
+    glRotated(VAL(UPPER_LEFT_LEG), 1.0, 0.0, 0);
+    drawSphere(0.55);
+    glTranslated(0, -1.5, -0.5);
+    glRotated(-70, 1.0, 0.0, 0.0);
+    draw_leftupperLeg();
+    drawSphere(0.2);
+    glRotated(90, 1.0, 0.0, 0.0);
+    glRotated(VAL(LOWER_LEFT_LEG), 1.0, 0.0, 0.0);
+    draw_leftlowerLeg();
+    glTranslated(0, -0.1, 1.1);
+    glRotated(-20, 1.0, 0.0, 0.0);
+    glRotated(-40, 0.0, 1.0, 0.0);
+    drawSphere(0.1);
+    draw_lefttoes();
+    glPopMatrix();
 }
 
 
 
 int main()
 {
-    ModelerControl controls[NUMCONTROLS ];
+    ModelerControl controls[NUMCONTROLS];
 
 
-	controls[XPOS] = ModelerControl("Move X", -5, 5, 1, 0);
-	controls[YPOS] = ModelerControl("Move Y", 0, 5, 1, 0);
-	controls[ZPOS] = ModelerControl("Move Z", -5, 5, 1, 0);
+    controls[XPOS] = ModelerControl("Move X", -5, 5, 1, 0);
+    controls[YPOS] = ModelerControl("Move Y", 0, 5, 1, 0);
+    controls[ZPOS] = ModelerControl("Move Z", -5, 5, 1, 0);
 
-	controls[HEADYPOS] = ModelerControl("Head Y Rotate", -20, 20, 1, 0);
-	controls[HEADZPOS] = ModelerControl("Head X Rotate", -20, 20, 1, 0);
-	controls[MOUTHZPOS] = ModelerControl("Mouth Rotate", 0, 40, 1, 0);
-	controls[NECK_LENTH] = ModelerControl("Neck Length", 1, 1.6, 0.1f, 1);
+    controls[HEADYPOS] = ModelerControl("Head Y Rotate", -20, 20, 1, 0);
+    controls[HEADZPOS] = ModelerControl("Head X Rotate", -20, 20, 1, 0);
+    controls[MOUTHZPOS] = ModelerControl("Mouth Rotate", 0, 40, 1, 0);
+    controls[NECK_LENTH] = ModelerControl("Neck Length", 1, 1.6, 0.1f, 1);
 
-	controls[UPPER_RIGHT_LEG] = ModelerControl("upper right leg", -20, 20, 1, 0);
-	controls[UPPER_LEFT_LEG] = ModelerControl("upper left leg", -20, 20, 1, 0);
-	controls[LOWER_RIGHT_LEG] = ModelerControl("lower right leg", -20, 20, 1, 0);
-	controls[LOWER_LEFT_LEG] = ModelerControl("lower left leg", -20, 20, 1, 0);
-	controls[LEFT_TOES] = ModelerControl("left toes", -20, 20, 1, 0);
-	controls[RIGHT_TOES] = ModelerControl("right toes", -20, 20, 1, 0);
+    controls[UPPER_RIGHT_LEG] = ModelerControl("upper right leg", -20, 20, 1, 0);
+    controls[UPPER_LEFT_LEG] = ModelerControl("upper left leg", -20, 20, 1, 0);
+    controls[LOWER_RIGHT_LEG] = ModelerControl("lower right leg", -20, 20, 1, 0);
+    controls[LOWER_LEFT_LEG] = ModelerControl("lower left leg", -20, 20, 1, 0);
+    controls[LEFT_TOES] = ModelerControl("left toes", -20, 20, 1, 0);
+    controls[RIGHT_TOES] = ModelerControl("right toes", -20, 20, 1, 0);
 
-	controls[RIGHT_WING] = ModelerControl("right wing", -20, 20, 1, 0);
-	controls[LEFT_WING] = ModelerControl("left wing", -20, 20, 1, 0);
+    controls[RIGHT_WING] = ModelerControl("right wing", -20, 20, 1, 0);
+    controls[LEFT_WING] = ModelerControl("left wing", -20, 20, 1, 0);
 
-	controls[TAIL] = ModelerControl("tail", -20, 20, 1, 0);
+    controls[TAIL] = ModelerControl("tail", -20, 20, 1, 0);
 
     controls[DEFAULT_LIGHT_R] = ModelerControl("Default Light R", 0, 255, 1, 25.5);
     controls[DEFAULT_LIGHT_G] = ModelerControl("Default Light G", 0, 255, 1, 25.5);
@@ -166,13 +372,16 @@ int main()
     controls[EYEBROW_G] = ModelerControl("Eyebrows G", 0, 1, 0.01, 0.27);
     controls[EYEBROW_B] = ModelerControl("Eyebrows B", 0, 1, 0.01, 0.07);
 
-    controls[PARTICLE_COUNT] = ModelerControl("particle count (pc)", 0.0, 5.0, 0.1, 5.0 );
-    
+    controls[PARTICLE_COUNT] = ModelerControl("particle count (pc)", 0.0, 5.0, 0.1, 5.0);
 
 
-	// You should create a ParticleSystem object ps here and then
-	// call ModelerApplication::Instance()->SetParticleSystem(ps)
-	// to hook it up to the animator interface.
+
+    // You should create a ParticleSystem object ps here and then
+    ParticleSystem* ps = new ParticleSystem();
+    parSys = ps;
+
+    ModelerApplication::Instance()->SetParticleSystem(ps);
+    // to hook it up to the animator interface.
 
     ModelerApplication::Instance()->Init(&createBird, controls, NUMCONTROLS);
 
@@ -704,124 +913,5 @@ void draw_flower()
     drawTriangle(0, 0.2, 0.2, 0.2, 0.2, 0, 0, 0.6, 0);
     drawTriangle(-0.1, 0.2, -0.1, 0.2, 0.2, 0, 0, 0.6, 0);
     drawTriangle(-0.1, 0.2, -0.1, 0, 0.2, 0.2, 0, 0.6, 0);
-    glPopMatrix();
-}
-
-void draw_level0()
-{
-    //draw flawor
-    glPushMatrix();
-    glTranslated(-3, 0, 4);
-    draw_flower();
-    glPopMatrix();
-
-    glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
-    glTranslated(0, 3.9, 0);
-
-    //Neck part
-    glPushMatrix();
-    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
-    glTranslated(0, 1.5, 0.6);
-    glRotated(-70, 1.0, 0.0, 0.0);
-    drawCylinder(VAL(NECK_LENTH), 0.7, 0.5);
-    glPopMatrix();
-
-    //head
-    glPushMatrix();
-    glTranslated(0, 2.8, 1.2);
-    glTranslated(0, VAL(NECK_LENTH) - 1, 0.2 * VAL(NECK_LENTH));
-    glRotated(-90, 0.0, 1.0, 0.0);
-    glRotated(VAL(HEADYPOS), 0.0, 1.0, 0.0);
-    glRotated(VAL(HEADZPOS), 0.0, 0.0, 1.0);
-    draw_Head();
-
-    glTranslated(1.35, 0, 0);
-    //upper mouth
-    glPushMatrix();
-    glRotated(VAL(MOUTHZPOS), 0, 0, 1);
-    draw_UpperMouth();
-    glPopMatrix();
-
-    //lower mouth
-    glPushMatrix();
-    glRotated(-VAL(MOUTHZPOS), 0, 0, 1);
-    draw_LowerMouth();
-    glPopMatrix();
-
-    glPopMatrix();
-
-
-    //left wing
-    glPushMatrix();
-    glTranslated(1.5, 0, 0);
-    glRotated(VAL(LEFT_WING), 0.0, 0.0, 1);
-    draw_left_wings();
-    glPopMatrix();
-
-    //right wing
-    glPushMatrix();
-    glTranslated(-1.5, 0, 0);
-    glRotated(VAL(RIGHT_WING), 0.0, 0.0, 1);
-    draw_right_wings();
-    glPopMatrix();
-
-    //body
-    glPushMatrix();
-    draw_body();
-    glPopMatrix();
-
-    //connection
-    glPushMatrix();
-    draw_connection();
-    glPopMatrix();
-
-    //tail
-    glPushMatrix();
-    glRotated(-20, 1, 0, 0);
-    glTranslated(0, 0, -4.5);
-    drawSphere(0.2);
-    glRotated(VAL(TAIL), 1.0, 0.0, 0);
-    draw_tail();
-    glPopMatrix();
-
-
-    //rightupper leg
-    glPushMatrix();
-    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
-    glTranslated(0.9, -1.7, -0.3);
-    glRotated(VAL(UPPER_RIGHT_LEG), 1.0, 0.0, 0);
-    drawSphere(0.55);
-    glTranslated(0, -1.5, -0.5);
-    glRotated(-70, 1.0, 0.0, 0.0);
-    drawSphere(0.2);
-    draw_rightupperLeg();
-    glRotated(90, 1.0, 0.0, 0.0);
-    glRotated(VAL(LOWER_RIGHT_LEG), 1.0, 0.0, 0);
-    draw_rightlowerLeg();
-    glTranslated(0, -0.1, 1.1);
-    glRotated(-20, 1.0, 0.0, 0.0);
-    glRotated(-40, 0.0, 1.0, 0.0);
-    drawSphere(0.1);
-    draw_righttoes();
-    glPopMatrix();
-
-    //lefttupper leg
-    glPushMatrix();
-    setDiffuseColor(VAL(BODY_R), VAL(BODY_G), VAL(BODY_B));
-    glTranslated(-0.9, -1.7, -0.3);
-    glRotated(VAL(UPPER_LEFT_LEG), 1.0, 0.0, 0);
-    drawSphere(0.55);
-    glTranslated(0, -1.5, -0.5);
-    glRotated(-70, 1.0, 0.0, 0.0);
-    draw_leftupperLeg();
-    drawSphere(0.2);
-    glRotated(90, 1.0, 0.0, 0.0);
-    glRotated(VAL(LOWER_LEFT_LEG), 1.0, 0.0, 0.0);
-    draw_leftlowerLeg();
-    glTranslated(0, -0.1, 1.1);
-    glRotated(-20, 1.0, 0.0, 0.0);
-    glRotated(-40, 0.0, 1.0, 0.0);
-    drawSphere(0.1);
-    draw_lefttoes();
     glPopMatrix();
 }

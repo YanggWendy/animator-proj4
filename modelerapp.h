@@ -11,8 +11,8 @@ struct ModelerControl
 {
 	ModelerControl();
 	ModelerControl(const char* name, float minimum, float maximum, float stepsize, float value);
-	ModelerControl(const ModelerControl &o);
-	ModelerControl& operator=(const ModelerControl &o);
+	ModelerControl(const ModelerControl& o);
+	ModelerControl& operator=(const ModelerControl& o);
 	void SetVals(const char* name, float minimum, float maximum, float stepsize, float value);
 
 	char  m_name[128];
@@ -40,21 +40,21 @@ public:
 	// Fetch the global ModelerApplication instance
 	static ModelerApplication* Instance();
 
-    // Initialize the application; see sample models for usage
-	void Init(ModelerViewCreator_f createView, 
-              const ModelerControl controls[], 
-              unsigned numControls); 
+	// Initialize the application; see sample models for usage
+	void Init(ModelerViewCreator_f createView,
+		const ModelerControl controls[],
+		unsigned numControls);
 
-    // Starts the application, returns when application is closed
+	// Starts the application, returns when application is closed
 	int  Run();
 
-    // Get and set slider values.
-    double GetControlValue(int controlNumber);
-    void   SetControlValue(int controlNumber, double value);
+	// Get and set slider values.
+	double GetControlValue(int controlNumber);
+	void   SetControlValue(int controlNumber, double value);
 
 	// Get and set particle system
-	ParticleSystem *GetParticleSystem();
-	void SetParticleSystem(ParticleSystem *s);
+	ParticleSystem* GetParticleSystem();
+	void SetParticleSystem(ParticleSystem* s);
 
 	// Return the current time
 	float GetTime();
@@ -70,21 +70,21 @@ private:
 	ModelerApplication() : m_numControls(-1) { ps = 0; }
 	ModelerApplication(const ModelerApplication&) {}
 	ModelerApplication& operator=(const ModelerApplication&) {}
-	
-	// The instance
-	static ModelerApplication *m_instance;
 
-	ModelerUI *m_ui;
+	// The instance
+	static ModelerApplication* m_instance;
+
+	ModelerUI* m_ui;
 	int					  m_numControls;
 
-    static void ValueChangedCallback();
+	static void ValueChangedCallback();
 	static void RedrawLoop(void*);
 
 	// Just a flag for updates
 	bool m_animating;
-
+public:
 	// Particle System variables
-	ParticleSystem *ps;
+	ParticleSystem* ps;
 };
 
 #endif

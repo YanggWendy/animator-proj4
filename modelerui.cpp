@@ -590,6 +590,9 @@ void ModelerUI::cb_loop(Fl_Light_Button* o, void* v)
 
 inline void ModelerUI::cb_simulate_i(Fl_Light_Button* o, void*) 
 {
+	ParticleSystem* ps = ModelerApplication::Instance()->GetParticleSystem();
+	double a = ModelerApplication::Instance()->GetTime();
+	ps->startSimulation(a);
 }
 
 void ModelerUI::cb_simulate(Fl_Light_Button* o, void* v) 

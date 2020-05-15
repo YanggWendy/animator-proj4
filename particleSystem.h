@@ -17,14 +17,21 @@
 #define __PARTICLE_SYSTEM_H__
 
 #include "vec.h"
+#include "Particle.h"
+#include <vector>
+#include "Mat.h"
+#include <map>
 
-
+#include <FL/gl.h>
+#include <stdlib.h>
 
 class ParticleSystem {
 
 public:
+	double const delta;
 
-
+	vector<Particle> v;
+	vector<ParticleSlice> ps;
 
 	/** Constructor **/
 	ParticleSystem();
@@ -40,7 +47,7 @@ public:
 
 	// This fxn should save the configuration of all particles
 	// at current time t.
-	virtual void bakeParticles(float t);
+	virtual void bakeParticles(float t, Vec3f temp);
 
 	// This function should compute forces acting on all particles
 	// and update their state (pos and vel) appropriately.
@@ -64,6 +71,7 @@ public:
 
 
 
+
 	// These accessor fxns are implemented for you
 	float getBakeStartTime() { return bake_start_time; }
 	float getBakeEndTime() { return bake_end_time; }
@@ -72,7 +80,7 @@ public:
 	bool isDirty() { return dirty; }
 	void setDirty(bool d) { dirty = d; }
 
-
+	void addParticle(Particle a);
 
 protected:
 

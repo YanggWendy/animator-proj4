@@ -10,30 +10,34 @@
 #define MODELERVIEW_H
 
 #include <FL/Fl_Gl_Window.H>
+#include "Mat.h"
+#include "Vec.h"
 
 class Camera;
 class ModelerView;
-typedef ModelerView* (*ModelerViewCreator_f)(int x, int y, int w, int h, char *label);
+typedef ModelerView* (*ModelerViewCreator_f)(int x, int y, int w, int h, char* label);
 
 typedef enum { CTRL_MODE, CURVE_MODE } cam_mode_t;
 
 class ModelerView : public Fl_Gl_Window
 {
 public:
-    ModelerView(int x, int y, int w, int h, char *label=0);
+	ModelerView(int x, int y, int w, int h, char* label = 0);
 
 	virtual ~ModelerView();
-    virtual int handle(int event);
-    virtual void draw();
+	virtual int handle(int event);
+	virtual void draw();
 
-	void setBMP(const char *fname);
+	Mat4f getCameraMatrix();
+
+	void setBMP(const char* fname);
 	void saveBMP(const char* szFileName);
 	void endDraw();
 
 	void camera(cam_mode_t mode);
-    Camera *m_camera;
-	Camera *m_ctrl_camera;
-	Camera *m_curve_camera;
+	Camera* m_camera;
+	Camera* m_ctrl_camera;
+	Camera* m_curve_camera;
 
 	float t;
 	void update();
