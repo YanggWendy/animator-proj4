@@ -21,9 +21,12 @@
 #define CURVE_TYPE_BEZIER 2
 #define CURVE_TYPE_CATMULLROM 3
 #define CURVE_TYPE_C2INTERPOLATING 4
-#define CURVE_TYPE_COUNT 5
+#define CURVE_TYPE_SUBSIVISION 5
+#define CURVE_TYPE_COUNT 6
 
-#define CURVE_COLOR_COUNT 6
+#define CURVE_COLOR_COUNT 7
+
+//subsivisioncurveevaluator
 
 class CurveDomain
 {
@@ -105,10 +108,10 @@ public:
 	int currCurveAdaptive() const;
 	void currCurveAdaptive(bool bAdaptive);
 
-	void flatnessActiveCurves(bool bWrap);
+	/*void flatnessActiveCurves(bool bWrap);
 	void flatnessCurve(int iCurve, bool bWrap);
 	double currCurveflatness() const;
-	void currCurveflatness(bool bAdaptive);
+	void currCurveflatness(bool bAdaptive);*/
 
 	void tensionActiveCurves(bool bWrap);
 	void tensionCurve(int iCurve, bool bWrap);

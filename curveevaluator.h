@@ -24,6 +24,7 @@ public:
 
 	static float s_fFlatnessEpsilon;
 	static int s_iSegCount;
+	static float tension;
 };
 
 

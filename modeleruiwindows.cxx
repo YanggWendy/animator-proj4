@@ -44,6 +44,7 @@ Fl_Menu_Item ModelerUIWindows::menu_m_pchoCurveType[] = {
  {"Bezier", 0,  0, 0, 0, 0, 0, 12, 0},
  {"Catmull-Rom", 0,  0, 0, 0, 0, 0, 12, 0},
  {"C2-Interpolating", 0,  0, 0, 0, 0, 0, 12, 0},
+  {"SubdivisionCurve", 0,  0, 0, 0, 0, 0, 12, 0},
  {0}
 };
 
@@ -129,30 +130,10 @@ ModelerUIWindows::ModelerUIWindows() {
               Fl_Light_Button* o = m_pbtAdaptive = new Fl_Light_Button(425, 470, 70, 20, "Adaptive");
               o->labelsize(12);
               o->user_data((void*)(this));
+              o->value(0);
           }
 
-          {
-              Fl_Value_Slider* o = m_pbttension = new Fl_Value_Slider(230, 500, 100, 20, "Tension");
-              o->type(5);
-              o->labelsize(12);
-              o->minimum(0.1);
-              o->maximum(2.0);
-              o->step(0.1);
-              o->value(0.5);
-              o->user_data((void*)(this)); // record self to be used by static callback functions
-              o->align(FL_ALIGN_LEFT);
-          }
-          {
-              Fl_Value_Slider* o = m_pbtflatness = new Fl_Value_Slider(400, 500, 120, 20, "Flatness");
-              o->type(5);
-              o->labelsize(12);
-              o->minimum(0.00001);
-              o->maximum(0.01);
-              o->step(0.00001);
-              o->value(0.0001);
-              o->user_data((void*)(this)); // record self to be used by static callback functions
-              o->align(FL_ALIGN_LEFT);
-          }
+          
 
           { Fl_Button* o = m_pbtZoomAll = new Fl_Button(505, 470, 75, 20, "Z&oom All");
             o->labelsize(12);
@@ -206,6 +187,28 @@ ModelerUIWindows::ModelerUIWindows() {
             o->user_data((void*)(this));
             o->align(FL_ALIGN_LEFT);
             Fl_Group::current()->resizable(o);
+          }
+          {
+              Fl_Value_Slider* o = m_pbttension = new Fl_Value_Slider(230, 500, 100, 20, "Tension");
+              o->type(5);
+              o->labelsize(12);
+              o->minimum(0.1);
+              o->maximum(2.0);
+              o->step(0.1);
+              o->value(0.5);
+              o->user_data((void*)(this)); // record self to be used by static callback functions
+              o->align(FL_ALIGN_LEFT);
+          }
+          {
+              Fl_Value_Slider* o = m_pbtflatness = new Fl_Value_Slider(400, 500, 120, 20, "Flatness");
+              o->type(5);
+              o->labelsize(12);
+              o->minimum(0.00001);
+              o->maximum(0.01);
+              o->step(0.00001);
+              o->value(0.0001);
+              o->user_data((void*)(this)); // record self to be used by static callback functions
+              o->align(FL_ALIGN_LEFT);
           }
           { Fl_Box* o = new Fl_Box(165, 555, 135, 20, "Playback Controls");
             o->labelsize(12);

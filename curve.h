@@ -62,7 +62,7 @@ public:
 
 	void toStream(std::ostream& output_stream) const;
 	void fromStream(std::istream& input_stream);
-
+	float m_bflatness;
 protected:
 	void init(const float fStartYValue = 0.0f);
 	void reevaluate(void) const;
@@ -77,9 +77,9 @@ protected:
 
 	float m_fMaxX;
 	bool m_bWrap;
-	bool m_bflatness;
+	bool m_bAdaptive;
 	float m_btension;
-	float m_bAdaptive;
+	
 	static float s_fCtrlPtXEpsilon;
 };
 

@@ -29,7 +29,7 @@
 #include "BSplinecurveevaluator.h"
 #include "B¨¦ziercurveevaluator.h"
 #include "C2InterpolatingCurve.h"
-
+#include "subsivisioncurveevaluator.h"
 
 #define LEFT		1
 #define MIDDLE		2
@@ -125,6 +125,7 @@ m_flcCurrCurve(FL_BLACK)
 	m_ppceCurveEvaluators[CURVE_TYPE_CATMULLROM] = new CatmullRomcurveevaluator();
 	// Note that C2-Interpolating curve is not a requirement
 	m_ppceCurveEvaluators[CURVE_TYPE_C2INTERPOLATING] = new C2InterpolatingCurve();
+	m_ppceCurveEvaluators[CURVE_TYPE_SUBSIVISION] = new SubdivisionCurveEvaluator();
 
 }
 
@@ -884,7 +885,7 @@ void GraphWidget::adaptiveCurve(int iCurve, bool bAdaptive)
 
 
 
-void GraphWidget::flatnessCurve(int iCurve, bool bflatness)
+/*void GraphWidget::flatnessCurve(int iCurve, bool bflatness)
 {
 	m_pcrvvCurves[iCurve]->adaptive(bflatness);
 }
@@ -905,7 +906,7 @@ void GraphWidget::currCurveflatness(bool bflatness)
 	if (m_iCurrCurve >= 0) {
 		m_pcrvvCurves[m_iCurrCurve]->flatness(bflatness);
 	}
-}
+}*/
 
 void GraphWidget::tensionCurve(int iCurve, bool btension)
 {

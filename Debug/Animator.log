@@ -1,0 +1,7 @@
+﻿cl : 命令行 warning D9035: “Gm”选项已否决，并将在将来的版本中移除
+  subsivisioncurveevaluator.cpp
+D:\project4\animator-proj4\subsivisioncurveevaluator.cpp(24,21): warning C4018: “<”: 有符号/无符号不匹配
+D:\project4\animator-proj4\subsivisioncurveevaluator.cpp(32,21): warning C4018: “<”: 有符号/无符号不匹配
+  modeleruiwindows.cxx
+  正在生成代码...
+  Animator.vcxproj -> D:\project4\animator-proj4\.\Debug\modeler.exe

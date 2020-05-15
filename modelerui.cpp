@@ -401,13 +401,10 @@ void ModelerUI::cb_Adaptive(Fl_Light_Button* o, void* v)
 
 inline void ModelerUI::cb_flatness_i(Fl_Slider*, void*)
 {
-	if (m_pbtflatness->value() == 1) {
-		m_pwndGraphWidget->currCurveflatness(true);
-	}
-	else if (m_pbtflatness->value() == 0) {
-		m_pwndGraphWidget->currCurveflatness(false);
-	}
+	
+	CurveEvaluator::s_fFlatnessEpsilon = float(m_pbtflatness->value());
 	m_pwndGraphWidget->redraw();
+	printf("flatness:%f\n", CurveEvaluator::s_fFlatnessEpsilon);
 }
 
 void ModelerUI::cb_flatness(Fl_Slider* o, void* v)
@@ -418,13 +415,9 @@ void ModelerUI::cb_flatness(Fl_Slider* o, void* v)
 
 inline void ModelerUI::cb_tension_i(Fl_Slider*, void*)
 {
-	if (m_pbttension->value() == 1) {
-		m_pwndGraphWidget->currCurvetension(true);
-	}
-	else if (m_pbtAdaptive->value() == 0) {
-		m_pwndGraphWidget->currCurvetension(false);
-	}
+	CurveEvaluator::tension = float(m_pbttension->value());
 	m_pwndGraphWidget->redraw();
+	printf("tension:%f\n", CurveEvaluator::tension);
 }
 
 void ModelerUI::cb_tension(Fl_Slider* o, void* v)
@@ -674,9 +667,12 @@ void ModelerUI::activeCurvesChanged()
 		m_pbtAdaptive->activate();
 		m_pbtAdaptive->value(m_pwndGraphWidget->currCurveAdaptive());
 		m_pbtflatness->activate();
-		m_pbtflatness->value(m_pwndGraphWidget->currCurveflatness());
+		m_pbtflatness->value(CurveEvaluator::s_fFlatnessEpsilon);
 		m_pbttension->activate();
 		m_pbttension->value(m_pwndGraphWidget->currCurvetension());
+
+	
+	
 	}
 	else {
 		m_pbtWrap->deactivate();
@@ -978,7 +974,7 @@ m_bSaveMovie(false)
 	m_pwndMainWnd->callback((Fl_Callback*)cb_hide);
 	m_pwndMainWnd->when(FL_HIDE);
 
-
+	m_pbtAdaptive->value(0);
 	m_pbttension->value(0.5);
 	m_pbtflatness->value(0.0001);
 	m_poutTime->value("0.00");
