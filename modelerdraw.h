@@ -9,6 +9,7 @@
 #include <cstdio>
 
 
+
 enum DrawModeSetting_t 
 { NONE=0, NORMAL, WIREFRAME, FLATSHADE, };
 

@@ -59,6 +59,7 @@ private:
 
 	bool m_bAnimating;
 	bool m_bSaveMovie;
+	//bool m_Adapt;
 	int m_iFps;
 	float m_fPlayStartTime, m_fPlayEndTime;
 	std::string m_strMovieFileName;
@@ -138,6 +139,14 @@ private:
 	inline void cb_loop_i(Fl_Light_Button*, void*);
 	static void cb_loop(Fl_Light_Button*, void*);
 	static void cb_timed(void *); // timed callback for animation
+
+
+	inline void cb_Adaptive_i(Fl_Light_Button*, void*);
+	static void cb_Adaptive(Fl_Light_Button*, void*);
+	inline void cb_flatness_i(Fl_Slider*, void*);
+	static void cb_flatness(Fl_Slider*, void*);
+	inline void cb_tension_i(Fl_Slider*, void*);
+	static void cb_tension(Fl_Slider*, void*);
 };
 
 #endif

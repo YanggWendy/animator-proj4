@@ -125,6 +125,27 @@ ModelerUIWindows::ModelerUIWindows() {
             o->labelsize(12);
             o->user_data((void*)(this));
           }
+          {
+              Fl_Light_Button* o = m_pbtAdaptive = new Fl_Light_Button(425, 470, 70, 20, "Adaptive");
+              o->labelsize(12);
+              o->user_data((void*)(this));
+          }
+
+          { Fl_Slider* o = m_pbtflatness = new Fl_Slider(345, 490, 40, 20, "flatness");
+          o->type(5);
+          o->minimum(0.0001);
+          o->maximum(0.001);
+          o->step(0.000001);
+          o->user_data((void*)(this));
+          }
+          { Fl_Slider* o = m_pbttension = new Fl_Slider(345, 525, 40, 20, "tension");
+          o->type(5);
+          o->minimum(0);
+          o->maximum(1);
+          o->step(0.01);
+          o->user_data((void*)(this));
+          }
+
           { Fl_Button* o = m_pbtZoomAll = new Fl_Button(505, 470, 75, 20, "Z&oom All");
             o->labelsize(12);
             o->user_data((void*)(this));
@@ -165,6 +186,8 @@ ModelerUIWindows::ModelerUIWindows() {
             o->labelsize(12);
             o->user_data((void*)(this));
           }
+
+
           { Fl_Value_Slider* o = m_psldrFPS = new Fl_Value_Slider(470, 580, 100, 20, "FPS");
             o->type(5);
             o->labelsize(12);
@@ -204,6 +227,8 @@ ModelerUIWindows::ModelerUIWindows() {
           o->color(80);
           o->user_data((void*)(this));
         }
+
+      
         { Fl_Box* o = new Fl_Box(95, 635, 90, 20, "Time:");
           o->labelsize(12);
           o->labelcolor(7);

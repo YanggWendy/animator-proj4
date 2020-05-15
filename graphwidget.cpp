@@ -28,6 +28,7 @@
 #include "CatmullRomcurveevaluator.h"
 #include "BSplinecurveevaluator.h"
 #include "B¨¦ziercurveevaluator.h"
+#include "C2InterpolatingCurve.h"
 
 
 #define LEFT		1
@@ -123,7 +124,7 @@ m_flcCurrCurve(FL_BLACK)
 	m_ppceCurveEvaluators[CURVE_TYPE_BEZIER] = new Beziercurveevaluator();
 	m_ppceCurveEvaluators[CURVE_TYPE_CATMULLROM] = new CatmullRomcurveevaluator();
 	// Note that C2-Interpolating curve is not a requirement
-	m_ppceCurveEvaluators[CURVE_TYPE_C2INTERPOLATING] = new LinearCurveEvaluator();
+	m_ppceCurveEvaluators[CURVE_TYPE_C2INTERPOLATING] = new C2InterpolatingCurve();
 
 }
 
@@ -850,9 +851,82 @@ void GraphWidget::currCurveWrap(bool bWrap)
 	}
 }
 
+
+
 void GraphWidget::wrapCurve(int iCurve, bool bWrap)
 {
 	m_pcrvvCurves[iCurve]->wrap(bWrap);
+}
+
+
+int GraphWidget::currCurveAdaptive() const
+{
+	if (m_iCurrCurve >= 0) {
+		bool bAdaptive = m_pcrvvCurves[m_iCurrCurve]->adaptive();
+		return bAdaptive ? 1 : 0;
+	}
+
+	return -1;
+}
+
+void GraphWidget::currCurveAdaptive(bool bAdaptive)
+{
+	if (m_iCurrCurve >= 0) {
+		m_pcrvvCurves[m_iCurrCurve]->adaptive(bAdaptive);
+	}
+}
+
+void GraphWidget::adaptiveCurve(int iCurve, bool bAdaptive)
+{
+	m_pcrvvCurves[iCurve]->adaptive(bAdaptive);
+}
+
+
+
+
+void GraphWidget::flatnessCurve(int iCurve, bool bflatness)
+{
+	m_pcrvvCurves[iCurve]->adaptive(bflatness);
+}
+
+
+int GraphWidget::currCurveflatness() const
+{
+	if (m_iCurrCurve >= 0) {
+		bool bflatness = m_pcrvvCurves[m_iCurrCurve]->flatness();
+		return bflatness ? 1 : 0;
+	}
+
+	return -1;
+}
+
+void GraphWidget::currCurveflatness(bool bflatness)
+{
+	if (m_iCurrCurve >= 0) {
+		m_pcrvvCurves[m_iCurrCurve]->adaptive(bflatness);
+	}
+}
+
+void GraphWidget::tensionCurve(int iCurve, bool btension)
+{
+	m_pcrvvCurves[iCurve]->adaptive(btension);
+}
+
+int GraphWidget::currCurvetension() const
+{
+	if (m_iCurrCurve >= 0) {
+		bool btension = m_pcrvvCurves[m_iCurrCurve]->tension();
+		return btension ? 1 : 0;
+	}
+
+	return -1;
+}
+
+void GraphWidget::currCurvetension(bool btension)
+{
+	if (m_iCurrCurve >= 0) {
+		m_pcrvvCurves[m_iCurrCurve]->tension(btension);
+	}
 }
 
 void GraphWidget::invalidateAllCurves()

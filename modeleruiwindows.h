@@ -54,6 +54,7 @@ public:
   Fl_Choice *m_pchoCurveType;
   static Fl_Menu_Item menu_m_pchoCurveType[];
   Fl_Light_Button *m_pbtWrap;
+  Fl_Light_Button* m_pbtAdaptive;
   Fl_Button *m_pbtZoomAll;
   Fl_Button *m_pbtStepBack;
   Fl_Button *m_pbtPlay;
@@ -65,6 +66,8 @@ public:
   Fl_Slider *m_psldrTimeSlider;
   Fl_Slider *m_psldrPlayStart;
   Fl_Slider *m_psldrPlayEnd;
+  Fl_Slider* m_pbtflatness;
+  Fl_Slider* m_pbttension;
   Fl_Output *m_poutTime;
   Fl_Output *m_poutPlayStart;
   Fl_Output *m_poutPlayEnd;

@@ -383,6 +383,60 @@ void ModelerUI::cb_wrap(Fl_Light_Button* o, void* v)
 	((ModelerUI*)(o->user_data()))->cb_wrap_i(o,v);
 }
 
+inline void ModelerUI::cb_Adaptive_i(Fl_Light_Button*, void*)
+{
+	if (m_pbtAdaptive->value() == 1) {
+		m_pwndGraphWidget->currCurveAdaptive(true);
+	}
+	else if (m_pbtAdaptive->value() == 0) {
+		m_pwndGraphWidget->currCurveAdaptive(false);
+	}
+	m_pwndGraphWidget->redraw();
+}
+
+void ModelerUI::cb_Adaptive(Fl_Light_Button* o, void* v)
+{
+	((ModelerUI*)(o->user_data()))->cb_Adaptive_i(o, v);
+}
+
+inline void ModelerUI::cb_flatness_i(Fl_Slider*, void*)
+{
+	if (m_pbtflatness->value() == 1) {
+		m_pwndGraphWidget->currCurveflatness(true);
+	}
+	else if (m_pbtflatness->value() == 0) {
+		m_pwndGraphWidget->currCurveflatness(false);
+	}
+	m_pwndGraphWidget->redraw();
+}
+
+void ModelerUI::cb_flatness(Fl_Slider* o, void* v)
+{
+	((ModelerUI*)(o->user_data()))->cb_flatness_i(o, v);
+}
+
+
+inline void ModelerUI::cb_tension_i(Fl_Slider*, void*)
+{
+	if (m_pbttension->value() == 1) {
+		m_pwndGraphWidget->currCurvetension(true);
+	}
+	else if (m_pbtAdaptive->value() == 0) {
+		m_pwndGraphWidget->currCurvetension(false);
+	}
+	m_pwndGraphWidget->redraw();
+}
+
+void ModelerUI::cb_tension(Fl_Slider* o, void* v)
+{
+	((ModelerUI*)(o->user_data()))->cb_tension_i(o, v);
+}
+
+
+
+
+
+
 inline void ModelerUI::cb_indicatorWnd_i(IndicatorWindow*, void*) 
 {
 	currTime(m_pwndIndicatorWnd->floatingIndicator());
@@ -617,9 +671,18 @@ void ModelerUI::activeCurvesChanged()
 	if (m_pwndGraphWidget->currCurveWrap() >= 0) {
 		m_pbtWrap->activate();
 		m_pbtWrap->value(m_pwndGraphWidget->currCurveWrap());
+		m_pbtAdaptive->activate();
+		m_pbtAdaptive->value(m_pwndGraphWidget->currCurveAdaptive());
+		m_pbtflatness->activate();
+		m_pbtflatness->value(m_pwndGraphWidget->currCurvetension());
+		m_pbttension->activate();
+		m_pbttension->value(m_pwndGraphWidget->currCurvetension());
 	}
 	else {
 		m_pbtWrap->deactivate();
+		m_pbtAdaptive->deactivate();
+		m_pbtflatness->deactivate();
+		m_pbttension->deactivate();
 	}
 }
 
@@ -894,6 +957,9 @@ m_bSaveMovie(false)
 	m_pbtZoomAll->callback((Fl_Callback*)cb_zoomAll);
 	m_pchoCurveType->callback((Fl_Callback*)cb_curveType);
 	m_pbtWrap->callback((Fl_Callback*)cb_wrap);
+	m_pbtAdaptive->callback((Fl_Callback*)cb_Adaptive);
+	m_pbtflatness->callback((Fl_Callback*)cb_flatness);
+	m_pbttension->callback((Fl_Callback*)cb_tension);
 	m_pbtSetCamKeyFrame->callback((Fl_Callback*)cb_setCamKeyFrame);
 	m_pbtRemoveCamKeyFrame->callback((Fl_Callback*)cb_removeCamKeyFrame);
 	m_pbtRemoveAllCamKeyFrames->callback((Fl_Callback*)cb_removeAllCamKeyFrames);

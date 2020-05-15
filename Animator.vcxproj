@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="BSplinecurveevaluator.cpp" />
     <ClCompile Include="Béziercurveevaluator.cpp" />
+    <ClCompile Include="C2InterpolatingCurve.cpp" />
     <ClCompile Include="CatmullRomcurveevaluator.cpp" />
     <ClCompile Include="curve.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -267,6 +268,7 @@
   <ItemGroup>
     <ClInclude Include="BSplinecurveevaluator.h" />
     <ClInclude Include="Béziercurveevaluator.h" />
+    <ClInclude Include="C2InterpolatingCurve.h" />
     <ClInclude Include="CatmullRomcurveevaluator.h" />
     <ClInclude Include="curve.h" />
     <ClInclude Include="curveevaluator.h" />
@@ -285,14 +287,19 @@
     <ClInclude Include="indicatorwindow.h" />
     <ClInclude Include="modelerapp.h" />
     <ClInclude Include="rect.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="rulerwindow.h" />
     <ClInclude Include="mat.h" />
     <ClInclude Include="vec.h" />
+    <ClInclude Include="matrix.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cleanskel.pl" />
     <None Include="modeleruiwindows.fl" />
     <None Include="skelrenamer.pl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="modeler.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

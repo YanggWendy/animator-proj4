@@ -14,7 +14,9 @@ public:
 	virtual void evaluateCurve(const std::vector<Point>& control_points, 
 							   std::vector<Point>& evaluated_curve_points, 
 							   const float& animation_length, 
-							   const bool& wrap_control_points) const = 0;
+							   const bool& wrap_control_points,const bool& bAdaptive,
+		const float& bflatness, const float& btension) const = 0;
+
 
 
 	

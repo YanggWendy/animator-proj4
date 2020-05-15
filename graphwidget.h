@@ -100,6 +100,21 @@ public:
 	// -1: invalid, 0: not wrapped, 1: wrapped
 	int currCurveWrap() const;
 	void currCurveWrap(bool bWrap);
+	void adaptiveActiveCurves(bool bWrap);
+	void adaptiveCurve(int iCurve, bool bWrap);
+	int currCurveAdaptive() const;
+	void currCurveAdaptive(bool bAdaptive);
+
+	void flatnessActiveCurves(bool bWrap);
+	void flatnessCurve(int iCurve, bool bWrap);
+	int currCurveflatness() const;
+	void currCurveflatness(bool bAdaptive);
+
+	void tensionActiveCurves(bool bWrap);
+	void tensionCurve(int iCurve, bool bWrap);
+	int currCurvetension() const;
+	void currCurvetension(bool bAdaptive);
+
 	void invalidateAllCurves();
 	// note that this value is evaluated lazily (it's only updated
 	// after a redraw.

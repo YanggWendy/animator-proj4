@@ -21,6 +21,9 @@ Curve::Curve() :
 	m_pceEvaluator(NULL),
 	m_bWrap(false),
 	m_bDirty(true),
+	m_bAdaptive(true),
+	m_btension(true),
+	m_bflatness(true),
 	m_fMaxX(1.0f)
 {
 	init();
@@ -30,6 +33,9 @@ Curve::Curve(const float fMaxX, const Point& point) :
 	m_pceEvaluator(NULL),
 	m_bWrap(false),
 	m_bDirty(true),
+	m_bAdaptive(true),
+	m_btension(true),
+	m_bflatness(true),
 	m_fMaxX(fMaxX)
 {
 	addControlPoint(point);
@@ -39,6 +45,9 @@ Curve::Curve(const float fMaxX, const float fStartYValue) :
 	m_pceEvaluator(NULL),
 	m_bWrap(false),
 	m_bDirty(true),
+	m_bAdaptive(true),
+	m_btension(true),
+	m_bflatness(true),
 	m_fMaxX(fMaxX)
 {
 	init(fStartYValue);
@@ -110,6 +119,41 @@ bool Curve::wrap() const
 {
 	return m_bWrap;
 }
+
+void Curve::adaptive(bool bAdaptive)
+{
+	m_bAdaptive = bAdaptive;
+	m_bDirty = true;
+}
+
+bool Curve::adaptive() const
+{
+	return m_bAdaptive;
+}
+
+void Curve::flatness(bool bflatness)
+{
+	m_bflatness = bflatness;
+	m_bDirty = true;
+}
+
+float Curve::flatness() const
+{
+	return m_bflatness;
+}
+
+
+void Curve::tension(bool btension)
+{
+	m_btension = btension;
+	m_bDirty = true;
+}
+
+float Curve::tension() const
+{
+	return m_btension;
+}
+
 
 float Curve::evaluateCurveAt(const float x) const
 {
@@ -417,8 +461,8 @@ void Curve::reevaluate() const
 			m_pceEvaluator->evaluateCurve(m_ptvCtrlPts, 
 				m_ptvEvaluatedCurvePts, 
 				m_fMaxX, 
-				m_bWrap);
-
+				m_bWrap, m_bAdaptive, m_bflatness, m_btension);
+			
 			std::sort(m_ptvEvaluatedCurvePts.begin(),
 				m_ptvEvaluatedCurvePts.end(),
 				PointSmallerXCompare());

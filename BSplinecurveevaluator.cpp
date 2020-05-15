@@ -8,7 +8,9 @@ void BSplinecurveevaluator::evaluateCurve(
 	const std::vector<Point>& controlPoints,
 	std::vector<Point>& evaluatedPoints,
 	const float& animationLength,
-	const bool& beWrap) const
+	const bool& beWrap,
+	const bool& bAdaptive,
+	const float& bflatness, const float& btension) const
 {
 	evaluatedPoints.clear();
 
@@ -19,30 +21,30 @@ void BSplinecurveevaluator::evaluateCurve(
 	}
 
 	// a hack to make the endpoints controllable
-	vector<Point> controlPointsCopy;
+	vector<Point> controlPointsTemp;
 	if (beWrap)
 	{
-		Point start_p1 = Point((controlPoints.end() - 2)->x - animationLength,
+		Point start_point1 = Point((controlPoints.end() - 2)->x - animationLength,
 			(controlPoints.end() - 2)->y);
-		Point start_p2 = Point((controlPoints.end() - 1)->x - animationLength,
+		Point start_point2 = Point((controlPoints.end() - 1)->x - animationLength,
 			(controlPoints.end() - 1)->y);
-		Point end_p1 = Point((controlPoints.begin())->x + animationLength,
+		Point end_point1 = Point((controlPoints.begin())->x + animationLength,
 			(controlPoints.begin())->y);
-		Point end_p2 = Point((controlPoints.begin() + 1)->x + animationLength,
+		Point end_point2 = Point((controlPoints.begin() + 1)->x + animationLength,
 			(controlPoints.begin() + 1)->y);
-		controlPointsCopy.push_back(start_p1);
-		controlPointsCopy.push_back(start_p2);
-		controlPointsCopy.insert(controlPointsCopy.end(), controlPoints.begin(), controlPoints.end());
-		controlPointsCopy.push_back(end_p1);
-		controlPointsCopy.push_back(end_p2);
+		controlPointsTemp.push_back(start_point1);
+		controlPointsTemp.push_back(start_point2);
+		controlPointsTemp.insert(controlPointsTemp.end(), controlPoints.begin(), controlPoints.end());
+		controlPointsTemp.push_back(end_point1);
+		controlPointsTemp.push_back(end_point2);
 	}
 	else
 	{
-		controlPointsCopy.push_back(controlPoints.front());
-		controlPointsCopy.push_back(controlPoints.front());
-		controlPointsCopy.insert(controlPointsCopy.end(), controlPoints.begin(), controlPoints.end());
-		controlPointsCopy.push_back(controlPoints.back());
-		controlPointsCopy.push_back(controlPoints.back());
+		controlPointsTemp.push_back(controlPoints.front());
+		controlPointsTemp.push_back(controlPoints.front());
+		controlPointsTemp.insert(controlPointsTemp.end(), controlPoints.begin(), controlPoints.end());
+		controlPointsTemp.push_back(controlPoints.back());
+		controlPointsTemp.push_back(controlPoints.back());
 	}
 	const Mat4d basis = Mat4d(
 		1, 4, 1, 0,
@@ -51,12 +53,12 @@ void BSplinecurveevaluator::evaluateCurve(
 		0, 1, 4, 1) / 6.0;
 
 	Beziercurveevaluator bezierCurveEvaluator;
-	for (size_t cnt = 0; cnt + 3 < controlPointsCopy.size(); ++cnt)
+	for (size_t count = 0; count + 3 < controlPointsTemp.size(); ++count)
 	{
-		Vec4d param_x(controlPointsCopy[cnt].x, controlPointsCopy[cnt + 1].x,
-			controlPointsCopy[cnt + 2].x, controlPointsCopy[cnt + 3].x);
-		Vec4d param_y(controlPointsCopy[cnt].y, controlPointsCopy[cnt + 1].y,
-			controlPointsCopy[cnt + 2].y, controlPointsCopy[cnt + 3].y);
+		Vec4d param_x(controlPointsTemp[count].x, controlPointsTemp[count + 1].x,
+			controlPointsTemp[count + 2].x, controlPointsTemp[count + 3].x);
+		Vec4d param_y(controlPointsTemp[count].y, controlPointsTemp[count + 1].y,
+			controlPointsTemp[count + 2].y, controlPointsTemp[count + 3].y);
 		param_x = basis * param_x;
 		param_y = basis * param_y;
 		vector<Point> param_control;
@@ -65,7 +67,7 @@ void BSplinecurveevaluator::evaluateCurve(
 			param_control.push_back(Point(param_x[i], param_y[i]));
 		}
 		vector<Point> param_evaluated;
-		bezierCurveEvaluator.evaluateCurve(param_control, param_evaluated, animationLength, false);
+		bezierCurveEvaluator.evaluateCurve(param_control, param_evaluated, animationLength, false,bAdaptive, bflatness, btension);
 		evaluatedPoints.insert(evaluatedPoints.end(), param_evaluated.begin(), param_evaluated.end() - 2);
 	}
 
