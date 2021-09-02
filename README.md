@@ -1,6 +1,6 @@
 _**C++ Bird Simulation**_
 
-This is an accumulative project. Here we present our final result in a direct and clear way.
+This is an accumulative project starting from scratch. Here we present our final result in a direct and clear way.
 
 Control panel:
 
